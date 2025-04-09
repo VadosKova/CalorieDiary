@@ -16,3 +16,10 @@ class User:
         self.connection_string = ('DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=CalorieDiary;Trusted_Connection=yes')
         self.conn = pyodbc.connect(self.connection_string)
         self.cursor = self.conn.cursor()
+
+    def register_user(self):
+        self.cursor.execute('''
+            INSERT INTO Users (Username, Email, Password, Gender, Age, Weight, Height, Goal)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (self.username, self.email, self.password, self.gender, self.age, self.weight, self.height, self.goal))
+        self.conn.commit()
