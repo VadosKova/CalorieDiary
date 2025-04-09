@@ -126,3 +126,45 @@ def client_request(client):
         else:
             user.register_user()
             res = {"message": "Registration successful"}
+    elif data['action'] == 'login':
+        user = User(username=data['username'])
+        if user.check_login(data['password']):
+            res = {"message": "Login successful"}
+        else:
+            res = {"message": "Invalid credentials"}
+
+    elif data['action'] == 'add_meal':
+        user = User(username=data['username'])
+        user.add_meal(data['product_name'], data['weight'], data['caloric_value'])
+        res = {"message": "Meal added successfully"}
+
+    elif data['action'] == 'add_activity':
+        user = User(username=data['username'])
+        user.add_activity(data['calories_burned'], data['activity_date'])
+        res = {"message": "Activity added successfully"}
+
+    elif data['action'] == 'get_user_meals':
+        user = User(username=data['username'])
+        meals = user.get_user_meals()
+        res = {"meals": meals}
+
+    elif data['action'] == 'get_user_activities':
+        user = User(username=data['username'])
+        activities = user.get_user_activities()
+        res = {"activities": activities}
+
+    elif data['action'] == 'get_user_history':
+        user = User(username=data['username'])
+        history = user.get_user_history()
+        res = {"history": history}
+
+    elif data['action'] == 'calculate_bmr':
+        user = User(username=data['username'])
+        total_calories = user.calculate_bmr()
+        if isinstance(total_calories, str):  # ошибка
+            res = {"error": total_calories}
+        else:
+            res = {"total_calories": total_calories}
+
+    client.send(jsonpickle.encode(res).encode('utf-8'))
+    client.close()
