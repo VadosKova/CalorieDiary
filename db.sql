@@ -12,7 +12,8 @@ CREATE TABLE [Users](
     [Age] INT CHECK (Age > 0),
     [Weight] FLOAT CHECK ([Weight] > 0),
     [Height] FLOAT CHECK ([Height] > 0),
-    [Goal] VARCHAR(50) CHECK ([Goal] IN ('weight loss', 'maintenance', 'weight gain'))
+    [Goal] VARCHAR(50) CHECK ([Goal] IN ('weight loss', 'maintenance', 'weight gain')),
+    [ActivityLevel] VARCHAR(20) CHECK ([ActivityLevel] IN ('low', 'medium', 'high'))
 )
 
 CREATE TABLE [Meal] (
