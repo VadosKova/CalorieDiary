@@ -284,3 +284,30 @@ class CalorieDiary:
                 messagebox.showerror("Error", response.get("error", "Failed to add meal"))
         else:
             messagebox.showerror("Error", "Error")
+
+    def add_activity(self):
+        calories_burned = self.activity_calories_entry.get()
+        activity_date = self.activity_date_entry.get()
+
+        if not calories_burned or not activity_date:
+            messagebox.showerror("Error", "Please fill all fields")
+            return
+
+        try:
+            calories_burned = float(calories_burned)
+        except ValueError:
+            messagebox.showerror("Error", "Calories burned must be a number")
+            return
+
+        response = self.send_request({
+            "action": "add_activity",
+            "username": self.current_user,
+            "calories_burned": calories_burned,
+            "activity_date": activity_date
+        })
+
+        if response.get("message") == "Activity added successfully":
+            messagebox.showinfo("Success", "Activity added successfully")
+            self.main_menu()
+        else:
+            messagebox.showerror("Error", "Failed to add activity")
