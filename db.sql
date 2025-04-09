@@ -13,16 +13,16 @@ CREATE TABLE [Users](
     [Weight] FLOAT CHECK ([Weight] > 0),
     [Height] FLOAT CHECK ([Height] > 0),
     [Goal] VARCHAR(50) CHECK ([Goal] IN ('weight loss', 'maintenance', 'weight gain')),
-    [ActivityLevel] VARCHAR(20) CHECK ([ActivityLevel] IN ('low', 'medium', 'high'))
+	[ActivityLevel] VARCHAR(20) DEFAULT 'medium' CHECK ([ActivityLevel] IN ('low', 'medium', 'high'))
 )
 
-CREATE TABLE [Meal] (
+CREATE TABLE [Meals] (
     [MealId] INT IDENTITY(1,1) PRIMARY KEY,
-    [UserId] INT,
-    [FoodName] VARCHAR(100) NOT NULL,
-    [WeightInGrams] FLOAT CHECK ([WeightInGrams] > 0),
-    [CaloriesPer100g] FLOAT CHECK ([CaloriesPer100g] > 0),
-    FOREIGN KEY (UserId) REFERENCES [Users](UserId)
+    [UserId] INT NOT NULL,
+    [ProductName] VARCHAR(100) NOT NULL,
+    [Weight] FLOAT CHECK ([Weight] > 0),
+    [CaloricValue] FLOAT CHECK ([CaloricValue] > 0),
+    FOREIGN KEY (UserId) REFERENCES Users(UserId)
 )
 
 CREATE TABLE [Activity] (
