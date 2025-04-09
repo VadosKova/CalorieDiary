@@ -63,3 +63,10 @@ class User:
         self.cursor.execute('SELECT Type, Date FROM History WHERE UserId = (SELECT UserId FROM Users WHERE Username = ?) ORDER BY Date DESC', (self.username,))
         return self.cursor.fetchall()
 
+    def get_user_data(self):
+        self.cursor.execute('SELECT Gender, Age, Weight, Height FROM Users WHERE Username = ?', (self.username,))
+        result = self.cursor.fetchone()
+        if result:
+            return result
+        else:
+            return None
