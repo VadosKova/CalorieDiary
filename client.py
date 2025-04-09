@@ -251,3 +251,36 @@ class CalorieDiary:
             self.start_screen()
         else:
             messagebox.showerror("Error", response.get("message", "Registration failed"))
+
+    def add_meal(self):
+        product_name = self.meal_name_entry.get()
+        weight = self.meal_weight_entry.get()
+        caloric_value = self.meal_calories_entry.get()
+
+        if not product_name or not weight or not caloric_value:
+            messagebox.showerror("Error", "Please fill all fields")
+            return
+
+        try:
+            weight = float(weight)
+            caloric_value = float(caloric_value)
+        except ValueError:
+            messagebox.showerror("Error", "Weight and caloric value must be numbers")
+            return
+
+        response = self.send_request({
+            "action": "add_meal",
+            "username": self.current_user,
+            "product_name": product_name,
+            "weight": weight,
+            "caloric_value": caloric_value
+        })
+
+        if response and isinstance(response, dict):
+            if response.get("message") == "Meal added successfully":
+                messagebox.showinfo("Success", "Meal added successfully")
+                self.main_menu()
+            else:
+                messagebox.showerror("Error", response.get("error", "Failed to add meal"))
+        else:
+            messagebox.showerror("Error", "Error")
