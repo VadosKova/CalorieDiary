@@ -23,3 +23,17 @@ class User:
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ''', (self.username, self.email, self.password, self.gender, self.age, self.weight, self.height, self.goal))
         self.conn.commit()
+
+    def check_login(self, input_password):
+        self.cursor.execute('SELECT Password FROM Users WHERE Username = ?', (self.username,))
+        result = self.cursor.fetchone()
+
+        if not result:
+            return False
+
+        stored_password = result[0]
+        return stored_password == input_password
+
+    def check_username_exists(self):
+        self.cursor.execute('SELECT * FROM Users WHERE Username = ?', (self.username,))
+        return self.cursor.fetchone() is not None
