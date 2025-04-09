@@ -109,3 +109,20 @@ class User:
         self.conn.commit()
 
         return total_calories
+
+    def close_connection(self):
+        self.conn.close()
+
+
+def client_request(client):
+    req = client.recv(4096).decode('utf-8')
+    data = jsonpickle.decode(req)
+
+    if data['action'] == 'register':
+        user = User(username=data['username'], email=data['email'], password=data['password'], gender=data['gender'], age=data['age'], weight=data['weight'], height=data['height'], goal=data['goal'])
+
+        if user.check_username_exists():
+            res = {"message": "Username already registered"}
+        else:
+            user.register_user()
+            res = {"message": "Registration successful"}
