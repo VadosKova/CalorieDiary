@@ -120,3 +120,37 @@ class CalorieDiary:
 
         Button(self.root, text="Add Activity", font=self.button_font, command=self.add_activity).pack(pady=10)
         Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
+
+    def show_meals(self):
+        self.clear_widgets()
+
+        Label(self.root, text="Your Meals", font=self.header_font, bg='#f0f0f0').pack(pady=10)
+        Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
+
+        response = self.send_request({
+            "action": "get_user_meals",
+            "username": self.current_user
+        })
+
+        if "meals" in response:
+            for meal in response["meals"]:
+                Label(self.root, text=f"{meal[0]}: {meal[1]}g, {meal[2]} kcal", font=self.label_font, bg='#f0f0f0').pack()
+        else:
+            Label(self.root, text="No meals found", font=self.label_font, bg='#f0f0f0').pack()
+
+    def show_activities(self):
+        self.clear_widgets()
+
+        Label(self.root, text="Your Activities", font=self.header_font, bg='#f0f0f0').pack(pady=10)
+        Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
+
+        response = self.send_request({
+            "action": "get_user_activities",
+            "username": self.current_user
+        })
+
+        if "activities" in response:
+            for activity in response["activities"]:
+                Label(self.root, text=f"{activity[1]}: {activity[0]} kcal burned", font=self.label_font, bg='#f0f0f0').pack()
+        else:
+            Label(self.root, text="No activities found", font=self.label_font, bg='#f0f0f0').pack()
