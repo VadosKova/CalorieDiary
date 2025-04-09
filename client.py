@@ -66,3 +66,21 @@ class CalorieDiary:
 
         Button(self.root, text="Register", font=self.button_font, command=self.register).pack(pady=10)
         Button(self.root, text="Back", font=self.button_font, command=self.start_screen).pack()
+
+    def main_menu(self):
+        self.clear_widgets()
+
+        Label(self.root, text=f"Welcome, {self.current_user}!", font=self.header_font, bg='#f0f0f0').pack(pady=20)
+
+        buttons = [
+            ("Add Meal", self.add_new_meal),
+            ("Add Activity", self.add_new_activity),
+            ("View Meals", self.show_meals),
+            ("View Activities", self.show_activities),
+            ("View History", self.show_history),
+            ("Calculate Daily Calories", self.calculate_bmr),
+            ("Logout", self.logout)
+        ]
+
+        for text, command in buttons:
+            Button(self.root, text=text, font=self.button_font, command=command).pack(pady=5)
