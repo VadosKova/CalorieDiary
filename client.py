@@ -154,3 +154,24 @@ class CalorieDiary:
                 Label(self.root, text=f"{activity[1]}: {activity[0]} kcal burned", font=self.label_font, bg='#f0f0f0').pack()
         else:
             Label(self.root, text="No activities found", font=self.label_font, bg='#f0f0f0').pack()
+
+    def show_history(self):
+        self.clear_widgets()
+
+        Label(self.root, text="Your History", font=self.header_font, bg='#f0f0f0').pack(pady=10)
+        Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
+
+        response = self.send_request({
+            "action": "get_user_history",
+            "username": self.current_user
+        })
+
+        if "history" in response:
+            for item in response["history"]:
+                Label(self.root, text=f"{item[1]}: {item[0]}", font=self.label_font, bg='#f0f0f0').pack()
+        else:
+            Label(self.root, text="No history found", font=self.label_font, bg='#f0f0f0').pack()
+
+    def clear_widgets(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
