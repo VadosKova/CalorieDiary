@@ -1,7 +1,6 @@
 import socket
 import jsonpickle
 import pyodbc
-from datetime import datetime
 
 class User:
     def __init__(self, username=None, email=None, password=None, gender=None, age=None, weight=None, height=None, goal=None, activity_level=None):
