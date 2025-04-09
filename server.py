@@ -18,10 +18,7 @@ class User:
         self.cursor = self.conn.cursor()
 
     def register_user(self):
-        self.cursor.execute('''
-            INSERT INTO Users (Username, Email, Password, Gender, Age, Weight, Height, Goal)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (self.username, self.email, self.password, self.gender, self.age, self.weight, self.height, self.goal))
+        self.cursor.execute('INSERT INTO Users (Username, Email, Password, Gender, Age, Weight, Height, Goal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (self.username, self.email, self.password, self.gender, self.age, self.weight, self.height, self.goal))
         self.conn.commit()
 
     def check_login(self, input_password):
@@ -37,3 +34,10 @@ class User:
     def check_username_exists(self):
         self.cursor.execute('SELECT * FROM Users WHERE Username = ?', (self.username,))
         return self.cursor.fetchone() is not None
+
+    def add_meal(self, product_name, weight, caloric_value):
+        self.cursor.execute('INSERT INTO Meals (UserId, ProductName, Weight, CaloricValue) VALUES ((SELECT UserId FROM Users WHERE Username = ?), ?, ?, ?)', (self.username, product_name, weight, caloric_value))
+        self.conn.commit()
+
+        self.cursor.execute('INSERT INTO History (UserId, Type, Date) VALUES ((SELECT UserId FROM Users WHERE Username = ?), 'meal', GETDATE())', (self.username,))
+        self.conn.commit()
