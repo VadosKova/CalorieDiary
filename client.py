@@ -84,3 +84,23 @@ class CalorieDiary:
 
         for text, command in buttons:
             Button(self.root, text=text, font=self.button_font, command=command).pack(pady=5)
+
+    def add_new_meal(self):
+        self.clear_widgets()
+
+        Label(self.root, text="Add New Meal", font=self.header_font, bg='#f0f0f0').pack(pady=10)
+
+        Label(self.root, text="Product Name:", font=self.label_font, bg='#f0f0f0').pack()
+        self.meal_name_entry = Entry(self.root)
+        self.meal_name_entry.pack()
+
+        Label(self.root, text="Weight (g):", font=self.label_font, bg='#f0f0f0').pack()
+        self.meal_weight_entry = Entry(self.root)
+        self.meal_weight_entry.pack()
+
+        Label(self.root, text="Caloric Value (kcal):", font=self.label_font, bg='#f0f0f0').pack()
+        self.meal_calories_entry = Entry(self.root)
+        self.meal_calories_entry.pack()
+
+        Button(self.root, text="Add Meal", font=self.button_font, command=self.add_meal).pack(pady=10)
+        Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
