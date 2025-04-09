@@ -104,3 +104,19 @@ class CalorieDiary:
 
         Button(self.root, text="Add Meal", font=self.button_font, command=self.add_meal).pack(pady=10)
         Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
+
+    def add_new_activity(self):
+        self.clear_widgets()
+
+        Label(self.root, text="Add New Activity", font=self.header_font, bg='#f0f0f0').pack(pady=10)
+
+        Label(self.root, text="Calories Burned:", font=self.label_font, bg='#f0f0f0').pack()
+        self.activity_calories_entry = Entry(self.root)
+        self.activity_calories_entry.pack()
+
+        Label(self.root, text="Date (YYYY-MM-DD):", font=self.label_font, bg='#f0f0f0').pack()
+        self.activity_date_entry = Entry(self.root)
+        self.activity_date_entry.pack()
+
+        Button(self.root, text="Add Activity", font=self.button_font, command=self.add_activity).pack(pady=10)
+        Button(self.root, text="Back", font=self.button_font, command=self.main_menu).pack()
