@@ -194,3 +194,23 @@ class CalorieDiary:
         except Exception as e:
             messagebox.showerror("Error", f"Connection error: {str(e)}")
             return {"error": str(e)}
+
+    def login(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        if not username or not password:
+            messagebox.showerror("Error", "Enter username and password")
+            return
+
+        response = self.send_request({
+            "action": "login",
+            "username": username,
+            "password": password
+        })
+
+        if response.get("message") == "Login successful":
+            self.current_user = username
+            self.main_menu()
+        else:
+            messagebox.showerror("Error", "Error")
