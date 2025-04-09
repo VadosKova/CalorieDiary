@@ -168,3 +168,17 @@ def client_request(client):
 
     client.send(jsonpickle.encode(res).encode('utf-8'))
     client.close()
+
+
+IP = '127.0.0.1'
+PORT = 4000
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind((IP, PORT))
+server.listen(1)
+print("Сервер запущен...")
+
+while True:
+    client, addr = server.accept()
+    print(f"Подключение от {addr}")
+    client_request(client)
