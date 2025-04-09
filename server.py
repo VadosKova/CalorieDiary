@@ -39,5 +39,5 @@ class User:
         self.cursor.execute('INSERT INTO Meals (UserId, ProductName, Weight, CaloricValue) VALUES ((SELECT UserId FROM Users WHERE Username = ?), ?, ?, ?)', (self.username, product_name, weight, caloric_value))
         self.conn.commit()
 
-        self.cursor.execute('INSERT INTO History (UserId, Type, Date) VALUES ((SELECT UserId FROM Users WHERE Username = ?), 'meal', GETDATE())', (self.username,))
+        self.cursor.execute('INSERT INTO History (UserId, Type, Date) VALUES ((SELECT UserId FROM Users WHERE Username = ?), ?, GETDATE())', (self.username, 'meal'))
         self.conn.commit()
