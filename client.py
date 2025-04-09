@@ -175,3 +175,22 @@ class CalorieDiary:
     def clear_widgets(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+
+    def send_request(self, data):
+        try:
+            client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            client.connect((IP, PORT))
+            client.send(jsonpickle.encode(data).encode('utf-8'))
+
+            response = client.recv(4096).decode('utf-8')
+            client.close()
+
+            if response:
+                return jsonpickle.decode(response)
+            return {"error": "Empty response from server"}
+        except ConnectionRefusedError:
+            messagebox.showerror("Error", "No connection")
+            return {"error": "Connection refused"}
+        except Exception as e:
+            messagebox.showerror("Error", f"Connection error: {str(e)}")
+            return {"error": str(e)}
