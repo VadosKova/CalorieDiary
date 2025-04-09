@@ -48,3 +48,16 @@ class User:
 
         self.cursor.execute('INSERT INTO History (UserId, Type, Date) VALUES ((SELECT UserId FROM Users WHERE Username = ?), ?, GETDATE())', (self.username, 'activity'))
         self.conn.commit()
+
+    def get_user_meals(self):
+        self.cursor.execute('SELECT ProductName, Weight, CaloricValue FROM Meals WHERE UserId = (SELECT UserId FROM Users WHERE Username = ?)', (self.username,))
+        return self.cursor.fetchall()
+
+    def get_user_activities(self):
+        self.cursor.execute('SELECT CalorieIntake, ActivityDate FROM Activity WHERE UserId = (SELECT UserId FROM Users WHERE Username = ?)', (self.username,))
+        return self.cursor.fetchall()
+
+    def get_user_history(self):
+        self.cursor.execute('SELECT Type, Date FROM History WHERE UserId = (SELECT UserId FROM Users WHERE Username = ?) ORDER BY Date DESC', (self.username,))
+        return self.cursor.fetchall()
+
