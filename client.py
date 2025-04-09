@@ -214,3 +214,40 @@ class CalorieDiary:
             self.main_menu()
         else:
             messagebox.showerror("Error", "Error")
+
+    def register(self):
+        data = {
+            "action": "register",
+            "username": self.register_entries["reg_username"].get(),
+            "email": self.register_entries["reg_email"].get(),
+            "password": self.register_entries["reg_password"].get(),
+            "gender": self.register_entries["reg_gender"].get().upper(),
+            "age": int(self.register_entries["reg_age"].get()),
+            "weight": float(self.register_entries["reg_weight"].get()),
+            "height": float(self.register_entries["reg_height"].get()),
+            "goal": self.register_entries["reg_goal"].get()
+        }
+
+        if self.register_entries["reg_password"].get() != self.register_entries["reg_confirm_password"].get():
+            messagebox.showerror("Error", "Passwords do not match")
+            return
+
+        if data["gender"] not in ["M", "F"]:
+            messagebox.showerror("Error", "Gender must be 'M' or 'F'")
+            return
+
+        try:
+            data["age"] = int(data["age"])
+            data["weight"] = float(data["weight"])
+            data["height"] = float(data["height"])
+        except ValueError:
+            messagebox.showerror("Error", "Age, weight and height must be numbers")
+            return
+
+        response = self.send_request(data)
+
+        if response.get("message") == "Registration successful":
+            messagebox.showinfo("Success", "Registration successful")
+            self.start_screen()
+        else:
+            messagebox.showerror("Error", response.get("message", "Registration failed"))
