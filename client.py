@@ -311,3 +311,24 @@ class CalorieDiary:
             self.main_menu()
         else:
             messagebox.showerror("Error", "Failed to add activity")
+
+    def calculate_bmr(self):
+        response = self.send_request({
+            "action": "calculate_bmr",
+            "username": self.current_user
+        })
+
+        if "total_calories" in response:
+            messagebox.showinfo("Daily Calories",f"Your estimated daily calorie needs: {response['total_calories']:.2f} kcal")
+        else:
+            messagebox.showerror("Error", response.get("error", "Failed to calculate daily calories"))
+
+    def logout(self):
+        self.current_user = None
+        self.start_screen()
+
+
+root = Tk()
+app = CalorieDiary(root)
+
+root.mainloop()
