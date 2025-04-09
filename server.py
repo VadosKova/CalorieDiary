@@ -70,3 +70,42 @@ class User:
             return result
         else:
             return None
+
+    def calculate_bmr(self):
+        user_data = self.get_user_data()
+
+        if not user_data:
+            return "User data not found"
+
+        gender, age, weight, height = user_data
+
+        if gender == 'M':
+            bmr = 88.362 + (13.397 * weight) + (4.799 * height) - (5.677 * age)
+        elif gender == 'F':
+            bmr = 447.593 + (9.247 * weight) + (3.098 * height) - (4.330 * age)
+        else:
+            return "Error"
+
+        activity_level = 'low'
+        activity_factor = 1.2
+
+        self.cursor.execute('SELECT ActivityLevel FROM Users WHERE Username = ?', (self.username,))
+        activity_level_from_db = self.cursor.fetchone()
+
+        if activity_level_from_db:
+            activity_level = activity_level_from_db[0]
+            if activity_level == 'low':
+                activity_factor = 1.2
+            elif activity_level == 'medium':
+                activity_factor = 1.55
+            elif activity_level == 'high':
+                activity_factor = 1.9
+            else:
+                return "Error"
+
+        total_calories = bmr * activity_factor
+
+        self.cursor.execute('UPDATE Users SET ActivityLevel = ? WHERE Username = ?', (activity_level, self.username))
+        self.conn.commit()
+
+        return total_calories
